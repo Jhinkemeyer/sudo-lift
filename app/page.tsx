@@ -1,7 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { auth, db, googleProvider } from "@/lib/firebase";
-import { signInWithPopup, onAuthStateChanged, User } from "firebase/auth";
+import {
+  signInWithRedirect,
+  getRedirectResult,
+  onAuthStateChanged,
+  User,
+} from "firebase/auth";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import LiftingForm from "@/components/LiftingForm";
 import CardioForm from "@/components/CardioForm";
@@ -14,6 +19,11 @@ export default function Dashboard() {
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
+    // Catch the result from the redirect login on component mount
+    getRedirectResult(auth).catch((error) => {
+      console.error("Redirect login failed", error);
+    });
+
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
@@ -34,7 +44,8 @@ export default function Dashboard() {
 
   const handleLogin = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      // Switched to Redirect for PWA/GrapheneOS compatibility
+      await signInWithRedirect(auth, googleProvider);
     } catch (error) {
       console.error("Login failed", error);
     }
