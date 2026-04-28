@@ -1,4 +1,4 @@
-import { initializeApp, getApps } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
@@ -11,13 +11,12 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-// This forces Firebase to use the authorized domain for the redirect handshake
-auth.tenantId = null;
+// Prevent re-initialization during Next.js hot reloads
+const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
+export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
-// Add this line to improve redirect reliability
+// Standard parameters that work across all platforms
 googleProvider.setCustomParameters({ prompt: "select_account" });
