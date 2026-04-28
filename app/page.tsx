@@ -11,32 +11,38 @@ import { collection, query, where, onSnapshot } from "firebase/firestore";
 import LiftingForm from "@/components/LiftingForm";
 import CardioForm from "@/components/CardioForm";
 import { generateMarkdown, copyToClipboard } from "@/lib/utils";
-import { ClipboardCopy, LogOut } from "lucide-react";
+import { ClipboardCopy, LogOut, Loader2 } from "lucide-react"; // Added Loader2
 
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true); // Added loading state
   const [logs, setLogs] = useState<any[]>([]);
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
-    const checkRedirect = async () => {
+    const initAuth = async () => {
       try {
+        // 1. Check if we just returned from a redirect
         const result = await getRedirectResult(auth);
         if (result?.user) {
           setUser(result.user);
         }
       } catch (error) {
         console.error("Redirect login check failed:", error);
+      } finally {
+        // 2. Only after checking redirect do we listen for the persistent session
+        const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
+          setUser(currentUser);
+          setLoading(false); // Authentication check is officially done
+        });
+        return unsubscribeAuth;
       }
     };
 
-    checkRedirect();
-
-    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => unsubscribeAuth();
+    const unsubscribePromise = initAuth();
+    return () => {
+      unsubscribePromise.then((unsubscribe) => unsubscribe && unsubscribe());
+    };
   }, []);
 
   useEffect(() => {
@@ -52,12 +58,23 @@ export default function Dashboard() {
   }, [user, today]);
 
   const handleLogin = async () => {
+    setLoading(true); // Show spinner while redirecting
     try {
       await signInWithRedirect(auth, googleProvider);
     } catch (error) {
+      setLoading(false);
       console.error("Login failed:", error);
     }
   };
+
+  // 3. Show a loading spinner so we don't accidentally show the Login screen during the handshake
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-zinc-50">
+        <Loader2 className="animate-spin text-zinc-400" size={32} />
+      </div>
+    );
+  }
 
   if (!user) {
     return (
