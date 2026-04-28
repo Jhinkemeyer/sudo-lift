@@ -8,6 +8,7 @@ import {
   User,
 } from "firebase/auth";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
+import Link from "next/link";
 import LiftingForm from "@/components/LiftingForm";
 import CardioForm from "@/components/CardioForm";
 import { generateMarkdown, copyToClipboard } from "@/lib/utils";
@@ -108,7 +109,14 @@ export default function Dashboard() {
           <LogOut size={20} />
         </button>
       </header>
-
+      <div className="flex gap-2">
+        <Link
+          href="/plan"
+          className="w-full bg-zinc-200 text-black text-center py-2 rounded-md font-bold text-sm uppercase tracking-wide hover:bg-zinc-300"
+        >
+          View Current Routine
+        </Link>
+      </div>
       <LiftingForm />
       <CardioForm />
 
