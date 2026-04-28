@@ -11,8 +11,13 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app =
-  getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+// This forces Firebase to use the authorized domain for the redirect handshake
+auth.tenantId = null;
+
 export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
+
+// Add this line to improve redirect reliability
+googleProvider.setCustomParameters({ prompt: "select_account" });

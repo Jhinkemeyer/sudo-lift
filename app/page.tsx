@@ -19,14 +19,23 @@ export default function Dashboard() {
   const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
-    // Catch the result from the redirect login on component mount
-    getRedirectResult(auth).catch((error) => {
-      console.error("Redirect login failed", error);
-    });
+    const checkRedirect = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result?.user) {
+          setUser(result.user);
+        }
+      } catch (error) {
+        console.error("Redirect login check failed:", error);
+      }
+    };
+
+    checkRedirect();
 
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+
     return () => unsubscribeAuth();
   }, []);
 
@@ -44,10 +53,9 @@ export default function Dashboard() {
 
   const handleLogin = async () => {
     try {
-      // Switched to Redirect for PWA/GrapheneOS compatibility
       await signInWithRedirect(auth, googleProvider);
     } catch (error) {
-      console.error("Login failed", error);
+      console.error("Login failed:", error);
     }
   };
 
