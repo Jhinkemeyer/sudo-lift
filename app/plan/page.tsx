@@ -127,7 +127,7 @@ export default function PlanPage() {
       {/* WEEK VIEW */}
       {viewMode === "week" && (
         <div className="space-y-4">
-          <h2 className="text-lg font-bold text-zinc-600 mb-2">
+          <h2 className="text-lg font-bold text-zinc-100 mb-2">
             The Week Ahead
           </h2>
           {DAYS_ORDER.map((day) => {

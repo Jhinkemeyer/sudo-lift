@@ -156,7 +156,7 @@ export default function Dashboard() {
           <h2 className="text-lg font-semibold">Today's Summary</h2>
           <button
             onClick={() => copyToClipboard(generateMarkdown(today, logs))}
-            className="flex items-center gap-2 text-xs font-bold uppercase bg-zinc-100 px-3 py-1.5 rounded-full hover:bg-zinc-200 text-black"
+            className="flex items-center gap-2 text-xs font-bold uppercase bg-zinc-100 px-3 py-1.5 rounded-full hover:bg-zinc-200 text-zinc-900"
           >
             <ClipboardCopy size={14} /> Export MD
           </button>
@@ -174,7 +174,7 @@ export default function Dashboard() {
                 className="p-3 border-l-2 border-black bg-white shadow-sm rounded-r-md flex justify-between items-start"
               >
                 <div>
-                  <p className="font-bold text-sm text-black">
+                  <p className="font-bold text-sm text-zinc-900">
                     {log.exercise || log.activity}
                   </p>
                   <p className="text-xs text-zinc-500 uppercase">
