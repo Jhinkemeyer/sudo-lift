@@ -134,7 +134,7 @@ export default function Dashboard() {
           <h2 className="text-lg font-semibold">Today's Summary</h2>
           <button
             onClick={() => copyToClipboard(generateMarkdown(today, logs))}
-            className="flex items-center gap-2 text-xs font-bold uppercase bg-zinc-100 px-3 py-1.5 rounded-full hover:bg-zinc-200"
+            className="flex items-center gap-2 text-xs font-bold uppercase bg-zinc-100 px-3 py-1.5 rounded-full hover:bg-zinc-200 text-black"
           >
             <ClipboardCopy size={14} /> Export MD
           </button>
@@ -149,7 +149,7 @@ export default function Dashboard() {
             {logs.map((log) => (
               <div
                 key={log.id}
-                className="p-3 border-l-2 border-black bg-white shadow-sm rounded-r-md"
+                className="p-3 border-l-2 border-black bg-white shadow-sm rounded-r-md text-black"
               >
                 <p className="font-bold text-sm">
                   {log.exercise || log.activity}
