@@ -82,7 +82,7 @@ export default function Dashboard() {
       <div className="flex flex-col min-h-screen items-center justify-center bg-zinc-50 space-y-8 px-4">
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900">
-            [Sudo Lift]
+            [Sudo-Lift]
           </h1>
           <p className="text-zinc-500 font-medium">
             Personal lifting and cardio journal.
@@ -100,13 +100,16 @@ export default function Dashboard() {
 
   return (
     <main className="max-w-md mx-auto p-4 pb-24 space-y-6">
-      <header className="flex justify-between items-center py-4">
-        <h1 className="text-2xl font-bold tracking-tight">Journal</h1>
+      <header className="flex justify-between items-center py-4 mb-2">
+        <h1 className="text-3xl font-extrabold tracking-tight !text-white">
+          [Sudo-Lift]
+        </h1>
         <button
           onClick={() => auth.signOut()}
-          className="text-zinc-400 hover:text-black"
+          className="text-zinc-400 hover:text-black transition-colors"
+          title="Sign Out"
         >
-          <LogOut size={20} />
+          <LogOut size={22} />
         </button>
       </header>
       <div className="grid grid-cols-2 gap-2 mb-2">
