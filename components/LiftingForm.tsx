@@ -34,6 +34,7 @@ export default function LiftingForm() {
         Log Lifting
       </h3>
       <input
+        type="text"
         placeholder="Exercise Name (e.g. Bench Press)"
         className="w-full p-2 bg-white border border-zinc-200 rounded-md outline-none focus:ring-1 focus:ring-black"
         value={formData.exercise}
@@ -42,30 +43,30 @@ export default function LiftingForm() {
       />
       <div className="grid grid-cols-3 gap-2">
         <input
-          type="number"
+          type="text"
           placeholder="Sets"
-          className="p-2 border border-zinc-200 rounded-md"
+          className="p-2 border border-zinc-200 rounded-md outline-none focus:ring-1 focus:ring-black w-full"
           value={formData.sets}
           onChange={(e) => setFormData({ ...formData, sets: e.target.value })}
         />
         <input
-          type="number"
-          placeholder="Reps"
-          className="p-2 border border-zinc-200 rounded-md"
+          type="text"
+          placeholder="Reps (e.g. 10, 30s)"
+          className="p-2 border border-zinc-200 rounded-md outline-none focus:ring-1 focus:ring-black w-full text-sm"
           value={formData.reps}
           onChange={(e) => setFormData({ ...formData, reps: e.target.value })}
         />
         <input
-          type="number"
-          placeholder="Weight"
-          className="p-2 border border-zinc-200 rounded-md"
+          type="text"
+          placeholder="Weight (e.g. 120, BW)"
+          className="p-2 border border-zinc-200 rounded-md outline-none focus:ring-1 focus:ring-black w-full text-sm"
           value={formData.weight}
           onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
         />
       </div>
       <textarea
         placeholder="Session notes (energy, feel...)"
-        className="w-full p-2 border border-zinc-200 rounded-md text-sm"
+        className="w-full p-2 border border-zinc-200 rounded-md text-sm outline-none focus:ring-1 focus:ring-black"
         value={formData.notes}
         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
       />
