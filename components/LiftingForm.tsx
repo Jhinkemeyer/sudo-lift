@@ -16,12 +16,18 @@ export default function LiftingForm() {
     e.preventDefault();
     if (!auth.currentUser) return;
 
+    // Local timezone fix
+    const d = new Date();
+    const localDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
     await addDoc(collection(db, `users/${auth.currentUser.uid}/logs`), {
       ...formData,
       type: "lifting",
-      date: new Date().toISOString().split("T")[0],
+      date: localDate,
       createdAt: serverTimestamp(),
     });
+
+    // THIS is the part that got deleted. It resets the form and closes the function!
     setFormData({ exercise: "", sets: "", reps: "", weight: "", notes: "" });
   };
 

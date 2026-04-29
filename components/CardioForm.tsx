@@ -1,3 +1,4 @@
+// src/components/CardioForm.tsx
 import { useState } from "react";
 import { db, auth } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -15,12 +16,17 @@ export default function CardioForm() {
     e.preventDefault();
     if (!auth.currentUser) return;
 
+    const d = new Date();
+    const localDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
     await addDoc(collection(db, `users/${auth.currentUser.uid}/logs`), {
       ...formData,
       type: "cardio",
-      date: new Date().toISOString().split("T")[0],
+      date: localDate,
       createdAt: serverTimestamp(),
     });
+
+    // THIS restores the closing of the function and resets your form!
     setFormData({
       activity: "",
       duration: "",
@@ -49,7 +55,7 @@ export default function CardioForm() {
         <input
           type="number"
           placeholder="Mins"
-          className="p-2 border border-zinc-200 rounded-md"
+          className="p-2 border border-zinc-200 rounded-md outline-none focus:ring-1 focus:ring-black"
           value={formData.duration}
           onChange={(e) =>
             setFormData({ ...formData, duration: e.target.value })
@@ -58,7 +64,7 @@ export default function CardioForm() {
         <input
           type="number"
           placeholder="Miles"
-          className="p-2 border border-zinc-200 rounded-md"
+          className="p-2 border border-zinc-200 rounded-md outline-none focus:ring-1 focus:ring-black"
           value={formData.distance}
           onChange={(e) =>
             setFormData({ ...formData, distance: e.target.value })
@@ -67,7 +73,7 @@ export default function CardioForm() {
         <input
           type="number"
           placeholder="Avg HR"
-          className="p-2 border border-zinc-200 rounded-md"
+          className="p-2 border border-zinc-200 rounded-md outline-none focus:ring-1 focus:ring-black"
           value={formData.heartRate}
           onChange={(e) =>
             setFormData({ ...formData, heartRate: e.target.value })
@@ -76,7 +82,7 @@ export default function CardioForm() {
       </div>
       <textarea
         placeholder="Session notes..."
-        className="w-full p-2 border border-zinc-200 rounded-md text-sm"
+        className="w-full p-2 border border-zinc-200 rounded-md text-sm outline-none focus:ring-1 focus:ring-black"
         value={formData.notes}
         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
       />
