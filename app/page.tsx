@@ -7,12 +7,19 @@ import {
   onAuthStateChanged,
   User,
 } from "firebase/auth";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import Link from "next/link";
 import LiftingForm from "@/components/LiftingForm";
 import CardioForm from "@/components/CardioForm";
 import { generateMarkdown, copyToClipboard } from "@/lib/utils";
-import { ClipboardCopy, LogOut, Loader2 } from "lucide-react"; // Added Loader2
+import { ClipboardCopy, LogOut, Loader2, Trash2 } from "lucide-react"; // Added Loader2
 
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null);
@@ -59,6 +66,19 @@ export default function Dashboard() {
     });
     return () => unsubscribe();
   }, [user, today]);
+
+  const handleDelete = async (logId: string) => {
+    if (!user) return;
+
+    // Add a quick native browser confirmation so you don't accidentally delete a PR
+    if (window.confirm("Are you sure you want to delete this log?")) {
+      try {
+        await deleteDoc(doc(db, `users/${user.uid}/logs`, logId));
+      } catch (error) {
+        console.error("Error deleting log:", error);
+      }
+    }
+  };
 
   const handleLogin = async () => {
     setLoading(true); // Show spinner while redirecting
@@ -151,16 +171,25 @@ export default function Dashboard() {
             {logs.map((log) => (
               <div
                 key={log.id}
-                className="p-3 border-l-2 border-black bg-white shadow-sm rounded-r-md text-black"
+                className="p-3 border-l-2 border-black bg-white shadow-sm rounded-r-md flex justify-between items-start"
               >
-                <p className="font-bold text-sm">
-                  {log.exercise || log.activity}
-                </p>
-                <p className="text-xs text-zinc-500 uppercase">
-                  {log.type === "lifting"
-                    ? `${log.sets}x${log.reps} @ ${log.weight}lbs`
-                    : `${log.duration}min | ${log.distance}mi | ${log.heartRate}bpm`}
-                </p>
+                <div>
+                  <p className="font-bold text-sm text-black">
+                    {log.exercise || log.activity}
+                  </p>
+                  <p className="text-xs text-zinc-500 uppercase">
+                    {log.type === "lifting"
+                      ? `${log.sets}x${log.reps} @ ${log.weight}lbs`
+                      : `${log.duration}min | ${log.distance}mi | ${log.heartRate}bpm`}
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleDelete(log.id)}
+                  className="text-zinc-300 hover:text-red-500 transition-colors p-1"
+                  title="Delete Log"
+                >
+                  <Trash2 size={16} />
+                </button>
               </div>
             ))}
           </div>
