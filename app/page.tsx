@@ -109,12 +109,18 @@ export default function Dashboard() {
           <LogOut size={20} />
         </button>
       </header>
-      <div className="flex gap-2">
+      <div className="grid grid-cols-2 gap-2 mb-2">
         <Link
           href="/plan"
-          className="w-full bg-zinc-200 text-black text-center py-2 rounded-md font-bold text-sm uppercase tracking-wide hover:bg-zinc-300"
+          className="w-full bg-zinc-200 text-black text-center py-2 rounded-md font-bold text-xs uppercase tracking-wide hover:bg-zinc-300"
         >
-          View Current Routine
+          Routine
+        </Link>
+        <Link
+          href="/history"
+          className="w-full bg-zinc-100 text-zinc-600 border border-zinc-200 text-center py-2 rounded-md font-bold text-xs uppercase tracking-wide hover:bg-zinc-200 hover:text-black transition-colors"
+        >
+          History
         </Link>
       </div>
       <LiftingForm />
