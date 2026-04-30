@@ -130,7 +130,8 @@ export default function HistoryPage() {
                         {log.exercise}
                       </div>
                       <div className="text-xs text-zinc-500 uppercase mt-0.5">
-                        {log.sets} sets × {log.reps} reps @ {log.weight}lbs
+                        {log.sets} sets × {log.reps} reps @ {log.weight}
+                        {log.weight?.toUpperCase().includes("BW") ? "" : "lbs"}
                       </div>
                       {log.notes && (
                         <div className="text-xs text-zinc-500 mt-1 italic">

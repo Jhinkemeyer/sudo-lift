@@ -218,12 +218,7 @@ export default function Dashboard() {
                               </p>
                               <p className="text-xs text-zinc-500 uppercase">
                                 {log.type === "lifting"
-                                  ? `${log.sets}x${log.reps} @ ${log.weight}${
-                                      log.weight?.includes(",") ||
-                                      log.weight?.toUpperCase().includes("BW")
-                                        ? ""
-                                        : "lbs"
-                                    }`
+                                  ? `${log.sets}x${log.reps} @ ${log.weight}${log.weight?.toUpperCase().includes("BW") ? "" : "lbs"}`
                                   : `${log.duration}min | ${log.distance}mi | ${log.heartRate}bpm`}
                               </p>
                             </div>
